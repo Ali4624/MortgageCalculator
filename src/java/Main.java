@@ -23,15 +23,26 @@ public class Main {
 
         double mortgage = calculateMortgage(principal, annualInterestRate,period);
 
-        System.out.println("Principal: "+NumberFormat.getCurrencyInstance().format(principal));
-        System.out.println("Annual Interest Rate: "+NumberFormat.getPercentInstance().format(annualInterestRate/PERCENT));
-        System.out.println("Period: "+ period);
-        System.out.println("Mortgage: "+ NumberFormat.getCurrencyInstance().format(mortgage));
+        System.out.println("MORTGAGE\n--------");
+        System.out.println("Monthly Payments: "+ NumberFormat.getCurrencyInstance().format(mortgage));
+        System.out.println("PAYMENT SCHEDULE\n----------------");
+        getPaymentsSchedule(principal, annualInterestRate, period);
     }
     public static double calculateMortgage(int principal, float annualInterestRate, byte period){
         float monthlyInterestRate = annualInterestRate/PERCENT/MONTHS;
         short numberOfPayments = (short)(period*MONTHS);
 
         return principal*(monthlyInterestRate*Math.pow((1+monthlyInterestRate),numberOfPayments))/(Math.pow((1+monthlyInterestRate),numberOfPayments)-1);
+    }
+    public static void getPaymentsSchedule(int principal,float annualInterestRate, byte period){
+        float monthlyInterestRate = annualInterestRate/PERCENT/MONTHS;
+        short numberOfPayments = (short)(period*MONTHS);
+        short paymentsDone = 1;
+        while (paymentsDone != numberOfPayments) {
+            double Balance =(double) (principal * (Math.pow((1 + monthlyInterestRate), numberOfPayments) - Math.pow((1 + monthlyInterestRate), paymentsDone))/(Math.pow((1+monthlyInterestRate), numberOfPayments) - 1));
+            System.out.println(NumberFormat.getCurrencyInstance().format(Balance));
+            paymentsDone++;
+        }
+        System.out.println("$0.00");
     }
 }
